@@ -156,13 +156,24 @@ def vpredict():
     print("Class counts:", class_counts)
     print("Frame labels:", frame_labels)
 
+    # Count for each class
+    normal_label = 'No Tumor'
+    abnormal_labels = [' Benign Tumor', 'Malignant Tumor']
+
+    normal_count = sum(class_counts[label] for label in [normal_label])
+    abnormal_count = sum(class_counts[label] for label in abnormal_labels)
+    normal_frames = [frame for label in [normal_label] for frame in frame_labels[label]]
+    abnormal_frames = [frame for label in abnormal_labels for frame in frame_labels[label]]
+
     shutil.rmtree(frames_dir)
 
     return jsonify({
         "status": aggregated_result,
         "total_frames": frame_count,
-        "class_counts": class_counts,
-        "frame_labels": frame_labels
+        "normal_count": normal_count,
+        "normal_frames": normal_frames,
+        "abnormal_count": abnormal_count,
+        "abnormal_frames": abnormal_frames
     })
 
 
